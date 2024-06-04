@@ -128,9 +128,9 @@ def filter_to_sub(path_to_load_from, schema, kind):
     print('Loading posts from {}.'.format( path_to_load_from ))
     items = spark.read.format('json').schema(schema).option('mode', 'PERMISSIVE').load(path_to_load_from)
 
-    items = items.filter(F.col('subreddit').isin( map(string.lower, SUB_NAMES ))
+    items = items.filter(F.col('subreddit').isin(SUB_NAMES))
 
-    print(f'\tHave {items.count():,d} {kind}s after filtering.')
+    print(f'Have {items.count():,d} {kind}s after filtering.')
 
     items.write.json(f'/projects/bdata/temp_city_subreddit_{kind}s_2020', mode='overwrite')
     print(f"Finished computing and writing output for {kind}s in {(time.monotonic()-start_time)/60:5.3f} minutes.")
